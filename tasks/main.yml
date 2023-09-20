@@ -1,0 +1,25 @@
+---
+# Install the package
+- name: Install haproxy package
+  apt:
+    name: haproxy
+    update_cache: yes
+    state: present
+  when:
+    - proxy__install
+
+# *** Here, we should collect current weights to avoid resetting... One day ;)
+
+# Create config file
+- name: Create global config file
+  template:
+    src: haproxy.cfg
+    dest: /etc/haproxy/haproxy.cfg
+  when:
+    - proxy__configure
+  notify:
+    - Reload haproxy
+
+# Should install a UDP proxy, using:
+  # socat -T15 udp-listen:24681,fork,reuseaddr udp:'123.456.789.111:24681
+...

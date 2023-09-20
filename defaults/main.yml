@@ -1,0 +1,39 @@
+---
+# defaults file for proxy
+proxy__install: False
+proxy__configure: False
+
+proxy__timeouts:
+  # tunnel: 60000
+  server: 500
+  client: 500
+  connect: 500
+  "http-request": 5s
+
+proxy__options:
+  - httplog
+  - dontlognull
+
+proxy__errorfile_path: /etc/haproxy/errors
+proxy__errorfiles:
+  400: "{{ proxy__errorfile_path }}/400.http"
+  403: "{{ proxy__errorfile_path }}/403.http"
+  408: "/dev/null"
+  500: "{{ proxy__errorfile_path }}/500.http"
+  502: "{{ proxy__errorfile_path }}/502.http"
+  503: "{{ proxy__errorfile_path }}/503.http"
+  504: "{{ proxy__errorfile_path }}/504.http"
+
+proxy__stats_password: proxystats
+
+proxy__config:
+  stats:
+    port: 1234
+    user: proxystats
+    password: "{{ proxy__stats_password }}"
+
+proxy__tcp_services: []
+proxy__http_services: []
+proxy__https_services: []
+
+...
